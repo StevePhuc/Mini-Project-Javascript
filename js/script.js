@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 const inputValue = document.querySelectorAll('.userInput input');
 const buttonCalculate = document.querySelector('.userInput button ');
 const output = document.querySelectorAll('.output>div');
