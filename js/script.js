@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
 const inputSelect = document.querySelectorAll('.userInput input');
-const buttonCalculate = document.querySelector('.userInput button ');
+const form = document.querySelector('.userInput form ');
 const output = document.querySelectorAll('.output>div');
 function BMI(weigh, height) {
   return weigh / height ** 2;
@@ -63,10 +63,11 @@ const outputText = BMI_Result.map(
 
 output[0].innerHTML = `<ul>${outputText}</ul>`;
 
-buttonCalculate.addEventListener('click', function() {
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
   const userBMI = BMI(inputSelect[0].value, inputSelect[1].value);
-  // console.log(userBMI);
-  // console.log(output);
+  console.log(typeof inputSelect[0].value, typeof inputSelect[1].value);
+
   let yourBMI;
   switch (true) {
     case userBMI < 18.5:
@@ -78,16 +79,16 @@ buttonCalculate.addEventListener('click', function() {
     case userBMI < 29.9:
       yourBMI = BMI_Result[2];
       break;
-    case userBMI >= 30:
+    case userBMI < 60:
       yourBMI = BMI_Result[3];
       break;
     default:
-      yourBMI = 0;
+      // yourBMI = 0;
       break;
   }
   // console.log(yourBMI);
   if (yourBMI != 0) {
-    hideError();
+    // hideError();
     output[1].querySelector('img ').setAttribute('src', yourBMI.imageUrl);
     // eslint-disable-next-line prettier/prettier
     output[2].querySelector('p').innerHTML = `<b>Your BMI is ${userBMI.toFixed(1)}, ${yourBMI.text}</b>`;

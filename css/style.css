@@ -49,7 +49,7 @@ h1 {
   padding-left: 10px;
   flex: 1 1 150px;
   margin-right: 5px;
-  min-width: 0;
+  min-width: 200px;
   height: 45px;
 }
 
