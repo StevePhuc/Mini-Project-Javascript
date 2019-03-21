@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="top">
+      <h1>Hexadecimal Color Generator</h1>
+      <form action="">
+        <input type="number" placeholder="Enter number" min="1" required />
+        <button>Generator</button>
+      </form>
+      <p>
+        Colors change people emotions so put meaningful colors on your site.
+      </p>
+    </div>
+
+    <div class="wrapper"></div>
+
+    <script>
+      const rgbGenerator = () => {
+        let red = ("0" + Math.floor(Math.random() * 256).toString(16)).slice(
+          -2
+        );
+        let green = ("0" + Math.floor(Math.random() * 256).toString(16)).slice(
+          -2
+        );
+        let blue = ("0" + Math.floor(Math.random() * 256).toString(16)).slice(
+          -2
+        );
+        return `#${red}${green}${blue}`;
+      };
+
+      container = document.querySelector(".wrapper");
+      const colorValue = document.querySelector(".color-value");
+
+      function colorGenerator(number) {
+        container.innerHTML = "";
+        for (let i = 0; i < number; i++) {
+          const color = rgbGenerator();
+          let box = document.createElement("div");
+          box.style.backgroundColor = color;
+          box.innerHTML = `<b>${color}</b><button data-color='${color}'>Copy</button>`;
+          container.appendChild(box);
+        }
+        const btnCopy = document.querySelectorAll(".wrapper button");
+        btnCopy.forEach(btn => btn.addEventListener("click", copyColor));
+      }
+      colorGenerator(5);
+
+      const form = document.querySelector(".top form");
+      const btnValue = document.querySelector(".top input");
+
+      form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        colorGenerator(btnValue.value);
+      });
+      // copy text
+      function copyColor() {
+        this.textContent = "Copy success";
+        setTimeout(() => {
+          this.textContent = "Copy";
+        }, 1000);
+        // const checkThis = this.parentNode.querySelector("b").textContent;
+        const checkThis = this.dataset.color;
+        console.log(this.dataset.color);
+
+        var textArea = document.createElement("textarea");
+        document.body.appendChild(textArea);
+        textArea.value = checkThis;
+        textArea.select();
+        document.execCommand("Copy");
+        textArea.remove();
+      }
+    </script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      .top,
+      .wrapper {
+        margin: 10px auto;
+        max-width: 800px;
+      }
+      .top {
+        background-color: plum;
+        text-align: center;
+        border-radius: 10px;
+      }
+      .top > * {
+        padding: 10px 0;
+      }
+      input {
+        text-align: center;
+        min-width: 400px;
+        margin-bottom: 10px;
+      }
+      .top button {
+        background-color: aqua;
+        min-width: 80px;
+      }
+      .wrapper div {
+        height: 100px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+      .wrapper button {
+        padding: 5px 10px;
+      }
+      .wrapper div:first-child {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+      .wrapper div:last-child {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+    </style>
+  </body>
+</html>
