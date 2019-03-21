@@ -2,10 +2,10 @@
 
 # Result
 
-[Link https://stevephuc.github.io/Mini-Project-Javascript/](https://stevephuc.github.io/Mini-Project-Javascript/)
+[Link https://stevephuc.github.io/Mini-Project-Javascript/](https://stevephuc.github.io/Mini-Project-Javascript/ target="\_blank)
 
-## BMI
+## Required
 
-### Required
+### BMI
 
-![](https://github.com/StevePhuc/Mini-Project-Javascript/blob/master/BMI/img/mokup-2.PNG)
+![](https://raw.githubusercontent.com/StevePhuc/Mini-Project-Javascript/master/1-BMI/BMI/img/mokup-2.PNG)
