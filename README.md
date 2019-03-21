@@ -2,7 +2,7 @@
 
 # Result
 
-[Link https://stevephuc.github.io/Mini-Project-Javascript/](https://stevephuc.github.io/Mini-Project-Javascript/ target="\_blank)
+[Link https://stevephuc.github.io/Mini-Project-Javascript/](https://stevephuc.github.io/Mini-Project-Javascript/)
 
 ## Required
 
