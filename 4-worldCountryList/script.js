@@ -12,24 +12,28 @@ function formatNumber(num) {
 }
 
 function findCountries(search, any) {
+  // check search type start with or any contain
   let re = new RegExp(search, 'gi');
   let keyword = 'contain';
   if (any == 0) {
     re = new RegExp(`^${search}`, 'i');
     keyword = 'start with';
   }
+  // check type Search with Name or Capital or Languages or all..
   const countryFind = countriesObject.filter(country => {
-    const sortName = document.querySelector('#sortName');
-    const sortCapital = document.querySelector('#sortCapital');
-    const sortLanguages = document.querySelector('#sortLanguages');
+    const findName = document.querySelector('#findName');
+    const findCapital = document.querySelector('#findCapital');
+    const findLanguages = document.querySelector('#findLanguages');
 
     const checkFind =
-      (country.name.match(re) && sortName.checked) ||
-      (country.capital.match(re) && sortCapital.checked) ||
-      (country.languages.join(',').match(re) && sortLanguages.checked);
+      (country.name.match(re) && findName.checked) ||
+      (country.capital.match(re) && findCapital.checked) ||
+      (country.languages.join(',').match(re) && findLanguages.checked);
 
     if (checkFind) return country;
   });
+
+  // show search result how many countries there are
   const searchResult = document.querySelector('.search__result');
   const sumCountryFind = countryFind.length;
   searchResult.innerHTML = '';
@@ -78,16 +82,12 @@ function showCountries() {
           );
         }
         if (key == 'languages') {
-          const arrayLanguages = [];
-          country[key].forEach((language, index) => {
-            arrayLanguages.push(
-              language.replace(
-                reSearch,
-                `<span class='text-search'>${searchText.value.toLowerCase()}</span>`
-              )
+          findCountry[key] = country[key]
+            .join(', ')
+            .replace(
+              reSearch,
+              `<span class='text-search'>${searchText.value.toLowerCase()}</span>`
             );
-          });
-          findCountry[key] = arrayLanguages;
         }
       });
     } else {
@@ -98,7 +98,7 @@ function showCountries() {
     <p class="flag"><img src=${country.flag}></p>
       <p class="name">${findCountry.name}</p>
       <p class="capital">${findCountry.capital}</p>
-      <p class="languages">${findCountry.languages.join(', ')}</p> 
+      <p class="languages">${findCountry.languages}</p> 
       <p class="population">${formatNumber(country.population)}</p>
     `;
     const reSort = new RegExp(sortBtnType);
@@ -149,9 +149,8 @@ sortType.forEach(sortItem => {
 });
 
 // change when click search type button
-const sortSearch = document.querySelectorAll('.sortSearch');
-sortSearch.forEach(searchItem => {
+const findSearch = document.querySelectorAll('.findSearch');
+findSearch.forEach(searchItem => {
   console.log(searchItem);
-
   searchItem.addEventListener('click', showCountries);
 });

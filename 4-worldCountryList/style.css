@@ -127,7 +127,7 @@ header {
   color: white;
 }
 
-.sort_text,
+.find_text,
 input:not(.result__input),
 label {
   color: white;
