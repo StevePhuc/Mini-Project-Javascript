@@ -80,7 +80,7 @@ header {
 
 .result__country div:hover {
   transform: scale(1.2);
-  transition: all 0.6 ease;
+  transition: all 0.5s ease;
   font-weight: bold;
   /* z-index: 999; */
 }
