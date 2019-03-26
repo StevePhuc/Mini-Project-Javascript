@@ -7,6 +7,10 @@ const result = document.querySelector('.result__country');
 
 totalCountries.textContent = countriesObject.length;
 
+function formatNumber(num) {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+}
+
 function findCountries(search, any) {
   let re = new RegExp(search, 'gi');
   let keyword = 'contain';
@@ -15,12 +19,11 @@ function findCountries(search, any) {
     keyword = 'start with';
   }
   const countryFind = countriesObject.filter(country => {
-    let checkFind = country.name.match(re) || country.capital.match(re);
-    country.languages.forEach(language => {
-      if (language.match(re)) {
-        checkFind = true;
-      }
-    });
+    const checkFind =
+      country.name.match(re) ||
+      country.capital.match(re) ||
+      country.languages.join(',').match(re);
+
     if (checkFind) return country;
   });
   const searchResult = document.querySelector('.search__result');
@@ -41,12 +44,17 @@ function sortCountries(listCountries, sortBtnType) {
     .classList.contains('fa-sort-alpha-up');
 
   if (sortCheck == true) {
-    return listCountries.sort((a, b) => a[sortBtnType] < b[sortBtnType]);
+    return listCountries.sort((a, b) =>
+      a[sortBtnType] > b[sortBtnType] ? -1 : 1
+    );
   }
-  return listCountries.sort((a, b) => a[sortBtnType] > b[sortBtnType]);
+  return listCountries.sort((a, b) =>
+    a[sortBtnType] < b[sortBtnType] ? -1 : 1
+  );
 }
 
 function showCountries() {
+  console.log('show');
   result.innerHTML = '';
 
   const searchType = document.querySelector('.search--click').dataset.search;
@@ -89,7 +97,7 @@ function showCountries() {
       <p class="name">${findCountry.name}</p>
       <p class="capital">${findCountry.capital}</p>
       <p class="languages">${findCountry.languages.join(', ')}</p> 
-      <p class="population">${country.population}</p>
+      <p class="population">${formatNumber(country.population)}</p>
     `;
     const reSort = new RegExp(sortBtnType);
     html = html.replace(reSort, `${sortBtnType} textUpperCase`);
@@ -128,8 +136,9 @@ function bntSort() {
   });
   if (this.classList.contains('sort-up')) {
     this.querySelector('.fas').classList.toggle('fa-sort-alpha-up');
+  } else {
+    this.classList.add('sort-up');
   }
-  this.classList.add('sort-up');
   showCountries();
 }
 
