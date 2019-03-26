@@ -19,21 +19,24 @@ function findCountries(search, any) {
     keyword = 'start with';
   }
   const countryFind = countriesObject.filter(country => {
+    const sortName = document.querySelector('#sortName');
+    const sortCapital = document.querySelector('#sortCapital');
+    const sortLanguages = document.querySelector('#sortLanguages');
+
     const checkFind =
-      country.name.match(re) ||
-      country.capital.match(re) ||
-      country.languages.join(',').match(re);
+      (country.name.match(re) && sortName.checked) ||
+      (country.capital.match(re) && sortCapital.checked) ||
+      (country.languages.join(',').match(re) && sortLanguages.checked);
 
     if (checkFind) return country;
   });
   const searchResult = document.querySelector('.search__result');
   const sumCountryFind = countryFind.length;
+  searchResult.innerHTML = '';
   if (sumCountryFind == 1 || sumCountryFind == 0) {
     searchResult.innerHTML = `Total ${keyword} <span class='result_search'>${search}</span> is  <span class='result_number'>${sumCountryFind}</span>`;
   } else if (countryFind.length < countriesObject.length) {
     searchResult.innerHTML = `Total ${keyword} <span class='result_search'>${search}</span> are  <span class='result_number'>${sumCountryFind}</span>`;
-  } else {
-    searchResult.innerHTML = '';
   }
   return countryFind;
 }
@@ -54,7 +57,6 @@ function sortCountries(listCountries, sortBtnType) {
 }
 
 function showCountries() {
-  console.log('show');
   result.innerHTML = '';
 
   const searchType = document.querySelector('.search--click').dataset.search;
@@ -144,4 +146,12 @@ function bntSort() {
 
 sortType.forEach(sortItem => {
   sortItem.addEventListener('click', bntSort);
+});
+
+// change when click search type button
+const sortSearch = document.querySelectorAll('.sortSearch');
+sortSearch.forEach(searchItem => {
+  console.log(searchItem);
+
+  searchItem.addEventListener('click', showCountries);
 });

@@ -67,8 +67,6 @@ header {
   display: flex;
   flex-flow: wrap;
   justify-content: space-between;
-  /* justify-content: center; */
-  /* align-items: center; */
 }
 
 .result__country div {
@@ -82,7 +80,6 @@ header {
   transform: scale(1.2);
   transition: all 0.5s ease;
   font-weight: bold;
-  /* z-index: 999; */
 }
 .result__country p {
   margin: 5px;
@@ -93,6 +90,7 @@ header {
 .result__country .textUpperCase {
   text-transform: uppercase;
   text-decoration: underline;
+  text-decoration-color: red;
   /* text-decoration-color: white; */
 }
 
@@ -127,4 +125,16 @@ header {
 
 .fa-sort-alpha-up {
   color: white;
+}
+
+.sort_text,
+input:not(.result__input),
+label {
+  color: white;
+  padding: 0 5px;
+}
+
+input:not(.result__input),
+label {
+  cursor: pointer;
 }
