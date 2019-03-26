@@ -35,34 +35,66 @@ function findCountries(search, any) {
   return countryFind;
 }
 
+function sortCountries(listCountries, sortBtnType) {
+  const sortCheck = document
+    .querySelector(`#${sortBtnType} .fas`)
+    .classList.contains('fa-sort-alpha-up');
+
+  if (sortCheck == true) {
+    return listCountries.sort((a, b) => a[sortBtnType] < b[sortBtnType]);
+  }
+  return listCountries.sort((a, b) => a[sortBtnType] > b[sortBtnType]);
+}
+
 function showCountries() {
   result.innerHTML = '';
 
   const searchType = document.querySelector('.search--click').dataset.search;
-  // console.log(searchType);
+  const sortBtnType = document.querySelector('.sort-up').id;
 
-  const listCountries = findCountries(searchText.value, searchType);
-
-  const sortNameCheck = document
-    .querySelector('#sortName .fas')
-    .classList.contains('fa-sort-alpha-up');
-  if (sortNameCheck == true) listCountries.reverse();
+  let listCountries = findCountries(searchText.value, searchType);
+  listCountries = sortCountries(listCountries, sortBtnType);
 
   listCountries.map(country => {
     const box = document.createElement('div');
+    let findCountry = {};
+    if (searchText.value != '') {
+      const reSearch = new RegExp(searchText.value, 'gi');
+      Object.keys(country).forEach(key => {
+        if (key == 'name' || key == 'capital') {
+          findCountry[key] = country[key].replace(
+            reSearch,
+            `<span class='text-search'>${searchText.value.toLowerCase()}</span>`
+          );
+        }
+        if (key == 'languages') {
+          const arrayLanguages = [];
+          country[key].forEach((language, index) => {
+            arrayLanguages.push(
+              language.replace(
+                reSearch,
+                `<span class='text-search'>${searchText.value.toLowerCase()}</span>`
+              )
+            );
+          });
+          findCountry[key] = arrayLanguages;
+        }
+      });
+    } else {
+      findCountry = Object.assign({}, country);
+    }
 
-    // const re = new RegExp(searchText.value, 'gi');
-    // const boldFind = country.name.replace(
-    //   re,
-    //   `<b>${searchText.value.toLowerCase()}</b>`
-    // );
-    box.innerHTML = ` 
+    let html = ` 
     <p class="flag"><img src=${country.flag}></p>
-      <p class="name">${country.name}</p>
-      <p class="capital">${country.capital}</p>
-      <p class="languages">${country.languages.join(', ')}</p> 
+      <p class="name">${findCountry.name}</p>
+      <p class="capital">${findCountry.capital}</p>
+      <p class="languages">${findCountry.languages.join(', ')}</p> 
       <p class="population">${country.population}</p>
     `;
+    const reSort = new RegExp(sortBtnType);
+    html = html.replace(reSort, `${sortBtnType} textUpperCase`);
+
+    box.innerHTML = html;
     result.appendChild(box);
   });
 }
@@ -86,6 +118,7 @@ searchFinds.forEach(searchFind => {
 
 // change when click SORT type button
 const sortType = document.querySelectorAll('.sort__name');
+
 function bntSort() {
   sortType.forEach(sortItem => {
     if (sortItem.id != this.id) {
@@ -93,16 +126,13 @@ function bntSort() {
       sortItem.querySelector('.fas').classList.remove('fa-sort-alpha-up');
     }
   });
-  this.classList.toggle('sort-up');
-  this.querySelector('.fas').classList.toggle('fa-sort-alpha-up');
+  if (this.classList.contains('sort-up')) {
+    this.querySelector('.fas').classList.toggle('fa-sort-alpha-up');
+  }
+  this.classList.add('sort-up');
   showCountries();
 }
 
 sortType.forEach(sortItem => {
   sortItem.addEventListener('click', bntSort);
 });
-
-// sort by name
-const sortName = document.querySelector('#sortName');
-const sortCapital = document.querySelector('#sortCapital');
-const sortPopulation = document.querySelector('#sortPopulation');
