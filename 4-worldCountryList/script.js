@@ -4,11 +4,28 @@
 const totalCountries = document.querySelector('header b');
 const searchText = document.querySelector('.result__input');
 const result = document.querySelector('.result__country');
+const findName = document.querySelector('#findName');
+const findCapital = document.querySelector('#findCapital');
+const findLanguages = document.querySelector('#findLanguages');
 
 totalCountries.textContent = countriesObject.length;
 
 function formatNumber(num) {
   return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+}
+
+function showTotalCountries(countryFind, keyword, search) {
+  // show search result how many countries there are
+  const searchResult = document.querySelector('.search__result');
+  const sumCountryFind = countryFind.length;
+  let tobe = 'are';
+  if (sumCountryFind == 1 || sumCountryFind == 0) {
+    tobe = 'is';
+  }
+  searchResult.innerHTML = `Total ${keyword} <span class='result_search'>${search}</span> ${tobe}  <span class='result_number'>${sumCountryFind}</span>`;
+  if (countryFind.length == countriesObject.length) {
+    searchResult.innerHTML = '';
+  }
 }
 
 function findCountries(search, any) {
@@ -21,10 +38,6 @@ function findCountries(search, any) {
   }
   // check type Search with Name or Capital or Languages or all..
   const countryFind = countriesObject.filter(country => {
-    const findName = document.querySelector('#findName');
-    const findCapital = document.querySelector('#findCapital');
-    const findLanguages = document.querySelector('#findLanguages');
-
     const checkFind =
       (country.name.match(re) && findName.checked) ||
       (country.capital.match(re) && findCapital.checked) ||
@@ -32,16 +45,7 @@ function findCountries(search, any) {
 
     if (checkFind) return country;
   });
-
-  // show search result how many countries there are
-  const searchResult = document.querySelector('.search__result');
-  const sumCountryFind = countryFind.length;
-  searchResult.innerHTML = '';
-  if (sumCountryFind == 1 || sumCountryFind == 0) {
-    searchResult.innerHTML = `Total ${keyword} <span class='result_search'>${search}</span> is  <span class='result_number'>${sumCountryFind}</span>`;
-  } else if (countryFind.length < countriesObject.length) {
-    searchResult.innerHTML = `Total ${keyword} <span class='result_search'>${search}</span> are  <span class='result_number'>${sumCountryFind}</span>`;
-  }
+  showTotalCountries(countryFind, keyword, search);
   return countryFind;
 }
 
@@ -60,6 +64,53 @@ function sortCountries(listCountries, sortBtnType) {
   );
 }
 
+function changeTextSearch(country) {
+  let findCountry = {};
+  if (searchText.value != '') {
+    const reSearch = new RegExp(searchText.value, 'gi');
+    Object.keys(country).forEach(key => {
+      if (key == 'name' || key == 'capital') {
+        findCountry[key] = country[key].replace(
+          reSearch,
+          `<span class='text-search'>${searchText.value.toLowerCase()}</span>`
+        );
+      }
+      if (key == 'languages') {
+        findCountry[key] = country[key]
+          .join(', ')
+          .replace(
+            reSearch,
+            `<span class='text-search'>${searchText.value.toLowerCase()}</span>`
+          );
+      }
+    });
+  } else {
+    findCountry = country;
+  }
+
+  return findCountry;
+}
+
+function renderCountries(listCountries) {
+  let divResult = '';
+  listCountries.map(country => {
+    const findCountry = changeTextSearch(country);
+    let html = `<div> 
+    <p class="flag"><img src=${country.flag}></p>
+      <p class="name">${findCountry.name}</p>
+      <p class="capital">${findCountry.capital}</p>
+      <p class="languages">${findCountry.languages}</p> 
+      <p class="population">${formatNumber(country.population)}</p>
+      </div>`;
+    const sortBtnType = document.querySelector('.sort-up').id;
+    const reSort = new RegExp(sortBtnType);
+    html = html.replace(reSort, `${sortBtnType} textUpperCase`);
+
+    divResult += html;
+  });
+  return divResult;
+}
+
 function showCountries() {
   result.innerHTML = '';
 
@@ -69,51 +120,18 @@ function showCountries() {
   let listCountries = findCountries(searchText.value, searchType);
   listCountries = sortCountries(listCountries, sortBtnType);
 
-  listCountries.map(country => {
-    const box = document.createElement('div');
-    let findCountry = {};
-    if (searchText.value != '') {
-      const reSearch = new RegExp(searchText.value, 'gi');
-      Object.keys(country).forEach(key => {
-        if (key == 'name' || key == 'capital') {
-          findCountry[key] = country[key].replace(
-            reSearch,
-            `<span class='text-search'>${searchText.value.toLowerCase()}</span>`
-          );
-        }
-        if (key == 'languages') {
-          findCountry[key] = country[key]
-            .join(', ')
-            .replace(
-              reSearch,
-              `<span class='text-search'>${searchText.value.toLowerCase()}</span>`
-            );
-        }
-      });
-    } else {
-      findCountry = Object.assign({}, country);
-    }
-
-    let html = ` 
-    <p class="flag"><img src=${country.flag}></p>
-      <p class="name">${findCountry.name}</p>
-      <p class="capital">${findCountry.capital}</p>
-      <p class="languages">${findCountry.languages}</p> 
-      <p class="population">${formatNumber(country.population)}</p>
-    `;
-    const reSort = new RegExp(sortBtnType);
-    html = html.replace(reSort, `${sortBtnType} textUpperCase`);
-
-    box.innerHTML = html;
-    result.appendChild(box);
-  });
+  result.innerHTML = renderCountries(listCountries);
 }
 showCountries();
 
 searchText.addEventListener('keyup', showCountries);
 
-// change when click SEARCH type button
+// every time click button run showCountry
 const searchFinds = document.querySelectorAll('.search--find');
+const sortType = document.querySelectorAll('.sort__type');
+const findType = document.querySelectorAll('.findType');
+
+// change when click on button type button
 function bntSearch() {
   searchFinds.forEach(searchFind =>
     searchFind.classList.remove('search--click')
@@ -121,13 +139,6 @@ function bntSearch() {
   this.classList.add('search--click');
   showCountries();
 }
-
-searchFinds.forEach(searchFind => {
-  searchFind.addEventListener('click', bntSearch);
-});
-
-// change when click SORT type button
-const sortType = document.querySelectorAll('.sort__name');
 
 function bntSort() {
   sortType.forEach(sortItem => {
@@ -144,13 +155,17 @@ function bntSort() {
   showCountries();
 }
 
+// add evemt to every sort and find button
+
+searchFinds.forEach(searchFind => {
+  searchFind.addEventListener('click', bntSearch);
+});
+
 sortType.forEach(sortItem => {
   sortItem.addEventListener('click', bntSort);
 });
 
-// change when click search type button
-const findSearch = document.querySelectorAll('.findSearch');
-findSearch.forEach(searchItem => {
+findType.forEach(searchItem => {
   console.log(searchItem);
   searchItem.addEventListener('click', showCountries);
 });
