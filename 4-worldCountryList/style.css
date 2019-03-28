@@ -41,6 +41,11 @@ header {
   padding: 6px;
 }
 /* TOP */
+
+.buttonType button:nth-child(4) {
+  margin-left: 100px;
+}
+
 .buttonTop {
   text-align: center;
 }
@@ -66,16 +71,7 @@ header {
   z-index: -1;
   align-items: center;
   margin: 5px;
-  /* background-color: darksalmon; */
-}
-
-.total__number {
-  /* text-align: right; */
-}
-.total__background {
-  /* background-color: darkred;
-  height: 40px;
-  justify-self: end; */
+  padding: 10px;
 }
 
 /* SEARCH CLICk */

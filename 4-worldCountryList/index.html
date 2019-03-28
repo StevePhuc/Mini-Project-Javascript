@@ -31,6 +31,13 @@
           >
             Search with any word
           </button>
+          <span class="find_text">Search in: </span>
+          <input class="findType" type="checkbox" id="findName" checked />
+          <label for="findName">Country</label>
+          <input class="findType" type="checkbox" id="findCapital" checked />
+          <label for="findCapital">Capital</label>
+          <input class="findType" type="checkbox" id="findLanguages" checked />
+          <label for="findLanguages">Languages</label>
         </div>
       </div>
       <div class="result">
@@ -53,23 +60,13 @@
             <span class="sort__text">Sort by Population</span>
             <i class="fas fa-sort-alpha-down"></i>
           </button>
-          <span class="find_text">Search in: </span>
-          <input class="findType" type="checkbox" id="findName" checked />
-          <label for="findName">Country</label>
-          <input class="findType" type="checkbox" id="findCapital" checked />
-          <label for="findCapital">Capital</label>
-          <input class="findType" type="checkbox" id="findLanguages" checked />
-          <label for="findLanguages">Languages</label>
-        </div>
-        <div class="wrapperTop">
-          <div class="buttonTop">
-            <button class="top__type top__check" id="population">
-              Top10 by Population
-            </button>
-            <button class="top__type">
-              Top10 by Languages
-            </button>
-          </div>
+          <button class="top__type " id="population">
+            Top10 by Population
+          </button>
+          <button class="top__type" id="languages">
+            Top10 by Languages
+          </button>
+
           <div class="showTopBar"></div>
         </div>
         <div class="result__country"></div>

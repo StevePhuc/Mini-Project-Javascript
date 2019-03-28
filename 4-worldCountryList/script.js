@@ -7,6 +7,7 @@ const result = document.querySelector('.result__country');
 const findName = document.querySelector('#findName');
 const findCapital = document.querySelector('#findCapital');
 const findLanguages = document.querySelector('#findLanguages');
+const showTopBar = document.querySelector('.showTopBar');
 
 totalCountries.textContent = countriesObject.length;
 
@@ -119,8 +120,24 @@ function sumTotalPopulation(listCountries) {
   });
   return mapTop.get('total');
 }
-
 const topTotalCountry = sumTotalPopulation(countriesObject);
+
+function sumTopLanguages(listCountries) {
+  const mapTop = new Map();
+
+  listCountries.forEach(country => {
+    country.languages.forEach(language => {
+      if (mapTop.has(language)) {
+        mapTop.set(language, mapTop.get(language) + 1);
+      } else {
+        mapTop.set(language, 1);
+      }
+    });
+  });
+  return Array.from(mapTop);
+}
+
+const topTotalLanguages = sumTopLanguages(countriesObject);
 
 function percentTotalPopular(numberTop) {
   return `${(
@@ -130,7 +147,6 @@ function percentTotalPopular(numberTop) {
 }
 
 function renderTopCountry(sortTopCountries, topSearchCountry, topType) {
-  const showTopBar = document.querySelector('.showTopBar');
   let html = `
     <p class="total__name" style="background: linear-gradient(-90deg, darkred 100%, black 0);">
       <span>Total ${topType} all:</span>
@@ -157,24 +173,79 @@ function renderTopCountry(sortTopCountries, topSearchCountry, topType) {
   showTopBar.innerHTML = html;
 }
 
+function percentLanguages(numberTop) {
+  // eslint-disable-next-line prettier/prettier
+  return `${((100 * numberTop) / parseFloat(topTotalLanguages.length)).toFixed(2)}%`;
+}
+
+function renderTopLanguages(arrTopLanguages) {
+  const showTopBar = document.querySelector('.showTopBar');
+  let html = `
+  <p class="total__name" style="background: linear-gradient(-90deg, darkred 100%, black 0);">
+    <span>Total languages all:</span>
+    <span>${topTotalLanguages.length}</span>
+  </p> 
+  <p class="total__name" 
+      style="background: linear-gradient(-90deg, darkred ${percentLanguages(
+        arrTopLanguages.length
+      )}, black 0);">
+    <span>Total languages result:</span> 
+    <span>${arrTopLanguages.length}</span>
+  </p>       
+`;
+
+  const top10Languages = arrTopLanguages
+    .sort((a, b) => {
+      if (a[1] > b[1]) {
+        return -1;
+      }
+      return 1;
+    })
+    .slice(0, 10);
+
+  top10Languages.forEach((language, index) => {
+    html += `
+    <p class="total__name"  style="background: linear-gradient(-90deg, darkred ${percentLanguages(
+      language[1]
+    )}, black 0);">
+      <span>${index + 1}. ${language[0]}:</span>
+      <span>${language[1]}</span> </p>
+    </p>
+  `;
+  });
+  showTopBar.innerHTML = html;
+}
+
 function countTopCountries(listCountries, topType) {
+  console.log('count top');
   if (topType == 'population') {
     const topSearchCountry = sumTotalPopulation(listCountries);
-    const sortTopCountries = sortCountries(listCountries, topType)
-      .reverse()
-      .slice(0, 10);
+    // for when click sort by population
+    const sortCheckPopulation = document
+      .querySelector(`#population .fas`)
+      .classList.contains('fa-sort-alpha-up');
+    let sortTopCountries;
+    if (sortCheckPopulation == false) {
+      sortTopCountries = sortCountries(listCountries, topType)
+        .reverse()
+        .slice(0, 10);
+    } else {
+      sortTopCountries = sortCountries(listCountries, topType).slice(0, 10);
+    }
 
     renderTopCountry(sortTopCountries, topSearchCountry, topType);
+  }
+
+  if (topType == 'languages') {
+    renderTopLanguages(sumTopLanguages(listCountries));
   }
 }
 
 function topCountries(listCountries) {
-  const btnTopCheck = document.querySelectorAll('.top__type');
-  btnTopCheck.forEach(btnTop => {
-    if (btnTop.classList.contains('top__check')) {
-      countTopCountries(listCountries, btnTop.id);
-    }
-  });
+  const btnTopCheck = document.querySelector('.top__check');
+  if (btnTopCheck) {
+    countTopCountries(listCountries, btnTopCheck.id);
+  }
 }
 
 function showCountries() {
@@ -196,6 +267,7 @@ searchText.addEventListener('keyup', showCountries);
 const searchFinds = document.querySelectorAll('.search--find');
 const sortType = document.querySelectorAll('.sort__type');
 const findType = document.querySelectorAll('.findType');
+const topType = document.querySelectorAll('.top__type');
 
 // change when click on button type button
 function bntSearch() {
@@ -221,6 +293,18 @@ function bntSort() {
   showCountries();
 }
 
+function bntTop() {
+  if (this.classList.contains('top__check')) {
+    this.classList.remove('top__check');
+    showTopBar.style.display = 'none';
+  } else {
+    showTopBar.style.display = 'block';
+    topType.forEach(btnTopType => btnTopType.classList.remove('top__check'));
+    this.classList.add('top__check');
+    showCountries();
+  }
+}
+
 // add evemt to every sort and find button
 
 searchFinds.forEach(searchFind => {
@@ -233,4 +317,8 @@ sortType.forEach(sortItem => {
 
 findType.forEach(searchItem => {
   searchItem.addEventListener('click', showCountries);
+});
+
+topType.forEach(btnTopType => {
+  btnTopType.addEventListener('click', bntTop);
 });
