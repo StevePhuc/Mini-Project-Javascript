@@ -53,23 +53,29 @@ header {
 
 .showTopBar {
   color: white;
-  display: grid;
+  /* display: grid;
   grid-template-columns: 200px 150px 1fr;
   grid-gap: 5px;
-  align-items: center;
+  align-items: center; */
 }
 
 .total__name {
+  display: flex;
+  justify-content: space-between;
+  height: 35px;
+  z-index: -1;
+  align-items: center;
+  margin: 5px;
   /* background-color: darksalmon; */
 }
 
 .total__number {
-  text-align: right;
+  /* text-align: right; */
 }
 .total__background {
-  background-color: darkred;
+  /* background-color: darkred;
   height: 40px;
-  justify-self: end;
+  justify-self: end; */
 }
 
 /* SEARCH CLICk */

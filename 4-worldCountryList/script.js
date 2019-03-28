@@ -131,28 +131,27 @@ function percentTotalPopular(numberTop) {
 
 function renderTopCountry(sortTopCountries, topSearchCountry, topType) {
   const showTopBar = document.querySelector('.showTopBar');
-
   let html = `
-    <p class="total__name">Total ${topType}: </p><p class="total__number"><span>${formatNumber(
-    topTotalCountry
-  )}</span></p>
-        <p class="total__background" style="width:100%"></p>
-    <p class="total__name">Total Search: </p><p class="total__number"><span>${formatNumber(
-      topSearchCountry
-    )}</span></p>
-        <p class="total__background" style="width:${percentTotalPopular(
+    <p class="total__name" style="background: linear-gradient(-90deg, darkred 100%, black 0);">
+      <span>Total ${topType} all:</span>
+      <span>${formatNumber(topTotalCountry)}</span>
+    </p> 
+    <p class="total__name" 
+        style="background: linear-gradient(-90deg, darkred ${percentTotalPopular(
           topSearchCountry
-        )}"></p>
+        )}, black 0);">
+      <span>Total  ${topType} result:</span> 
+      <span>${formatNumber(topSearchCountry)}</span>
+    </p>       
   `;
   sortTopCountries.forEach((topCountry, index) => {
     html += `
-    <p class="total__name">${index + 1}. ${
-      topCountry.name
-    }: </p><p class="total__number"><span>${formatNumber(
-      topCountry.population
-    )}</span></p><p class="total__background" style="width:${percentTotalPopular(
+    <p class="total__name"  style="background: linear-gradient(-90deg, darkred ${percentTotalPopular(
       parseFloat(topCountry.population)
-    )}"></p>
+    )}, black 0);">
+      <span>${index + 1}. ${topCountry.name}:</span>
+      <span>${formatNumber(topCountry.population)}</span> </p>
+    </p>
   `;
   });
   showTopBar.innerHTML = html;
