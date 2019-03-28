@@ -50,18 +50,15 @@ function findCountries(search, any) {
 }
 
 function sortCountries(listCountries, sortBtnType) {
+  const arrSort = [...listCountries];
   const sortCheck = document
     .querySelector(`#${sortBtnType} .fas`)
     .classList.contains('fa-sort-alpha-up');
 
   if (sortCheck == true) {
-    return listCountries.sort((a, b) =>
-      a[sortBtnType] > b[sortBtnType] ? -1 : 1
-    );
+    return arrSort.sort((a, b) => (a[sortBtnType] > b[sortBtnType] ? -1 : 1));
   }
-  return listCountries.sort((a, b) =>
-    a[sortBtnType] < b[sortBtnType] ? -1 : 1
-  );
+  return arrSort.sort((a, b) => (a[sortBtnType] < b[sortBtnType] ? -1 : 1));
 }
 
 function changeTextSearch(country) {
@@ -111,6 +108,76 @@ function renderCountries(listCountries) {
   return divResult;
 }
 
+/* FUNCTION FOR SHOW TOP10  */
+
+function sumTotalPopulation(listCountries) {
+  const mapTop = new Map();
+  mapTop.set('total', 0);
+
+  listCountries.forEach(country => {
+    mapTop.set('total', mapTop.get('total') + country.population);
+  });
+  return mapTop.get('total');
+}
+
+const topTotalCountry = sumTotalPopulation(countriesObject);
+
+function percentTotalPopular(numberTop) {
+  return `${(
+    (100 * parseFloat(numberTop)) /
+    parseFloat(topTotalCountry)
+  ).toFixed(2)}%`;
+}
+
+function renderTopCountry(sortTopCountries, topSearchCountry, topType) {
+  const showTopBar = document.querySelector('.showTopBar');
+
+  let html = `
+    <p class="total__name">Total ${topType}: </p><p class="total__number"><span>${formatNumber(
+    topTotalCountry
+  )}</span></p>
+        <p class="total__background" style="width:100%"></p>
+    <p class="total__name">Total Search: </p><p class="total__number"><span>${formatNumber(
+      topSearchCountry
+    )}</span></p>
+        <p class="total__background" style="width:${percentTotalPopular(
+          topSearchCountry
+        )}"></p>
+  `;
+  sortTopCountries.forEach((topCountry, index) => {
+    html += `
+    <p class="total__name">${index + 1}. ${
+      topCountry.name
+    }: </p><p class="total__number"><span>${formatNumber(
+      topCountry.population
+    )}</span></p><p class="total__background" style="width:${percentTotalPopular(
+      parseFloat(topCountry.population)
+    )}"></p>
+  `;
+  });
+  showTopBar.innerHTML = html;
+}
+
+function countTopCountries(listCountries, topType) {
+  if (topType == 'population') {
+    const topSearchCountry = sumTotalPopulation(listCountries);
+    const sortTopCountries = sortCountries(listCountries, topType)
+      .reverse()
+      .slice(0, 10);
+
+    renderTopCountry(sortTopCountries, topSearchCountry, topType);
+  }
+}
+
+function topCountries(listCountries) {
+  const btnTopCheck = document.querySelectorAll('.top__type');
+  btnTopCheck.forEach(btnTop => {
+    if (btnTop.classList.contains('top__check')) {
+      countTopCountries(listCountries, btnTop.id);
+    }
+  });
+}
+
 function showCountries() {
   result.innerHTML = '';
 
@@ -119,7 +186,7 @@ function showCountries() {
 
   let listCountries = findCountries(searchText.value, searchType);
   listCountries = sortCountries(listCountries, sortBtnType);
-
+  topCountries(listCountries);
   result.innerHTML = renderCountries(listCountries);
 }
 showCountries();
@@ -166,6 +233,5 @@ sortType.forEach(sortItem => {
 });
 
 findType.forEach(searchItem => {
-  console.log(searchItem);
   searchItem.addEventListener('click', showCountries);
 });

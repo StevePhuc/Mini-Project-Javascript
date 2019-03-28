@@ -34,14 +34,49 @@ header {
 }
 
 .search__button button,
-.sort__type {
+.sort__type,
+.top__type {
   margin-top: 10px;
   background-color: darksalmon;
   padding: 6px;
 }
+/* TOP */
+.buttonTop {
+  text-align: center;
+}
+
+.top__check {
+  background-color: darkred;
+  border-color: black;
+  color: white;
+}
+
+.showTopBar {
+  color: white;
+  display: grid;
+  grid-template-columns: 200px 150px 1fr;
+  grid-gap: 5px;
+  align-items: center;
+}
+
+.total__name {
+  /* background-color: darksalmon; */
+}
+
+.total__number {
+  text-align: right;
+}
+.total__background {
+  background-color: darkred;
+  height: 40px;
+  justify-self: end;
+}
+
+/* SEARCH CLICk */
 
 .search__button .search--click {
   background-color: brown;
+  border-color: black;
   color: white;
 }
 
@@ -121,6 +156,11 @@ header {
 
 .sort-up {
   background-color: brown;
+  border-color: black;
+}
+
+.sort-up .sort__text {
+  color: white;
 }
 
 .fa-sort-alpha-up {
