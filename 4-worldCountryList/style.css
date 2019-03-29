@@ -17,6 +17,27 @@ header {
   color: white;
 }
 
+input[type="text"]:focus {
+  background: black;
+  color: white;
+  transition: background 3s ease;
+}
+
+.video-background {
+  position: fixed;
+  top: 200px;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  z-index: -1;
+}
+
+.video-background video {
+  width: 100vw;
+  height: 100vh;
+}
+
 .search {
   text-align: center;
   /* position: sticky;
@@ -42,8 +63,14 @@ header {
 }
 /* TOP */
 
-.buttonType button:nth-child(4) {
-  margin-left: 100px;
+.buttonType {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(100px, 170px)) 1fr;
+  grid-gap: 15px;
+}
+
+.buttonType div {
+  text-align: right;
 }
 
 .buttonTop {
@@ -108,7 +135,7 @@ header {
 
 .result__country div {
   width: 150px;
-  margin: 5px 0;
+  margin: 5px 10px;
   text-align: center;
   background-color: whitesmoke;
 }
@@ -126,8 +153,8 @@ header {
 
 .result__country .textUpperCase {
   text-transform: uppercase;
-  text-decoration: underline;
-  text-decoration-color: red;
+  color: red;
+  font-weight: bold;
   /* text-decoration-color: white; */
 }
 
@@ -150,10 +177,15 @@ header {
   text-transform: capitalize;
 }
 
+.languages {
+  font-style: italic;
+}
+
 .result__country .text-search {
-  color: red;
+  color: blue;
   text-decoration: underline;
-  text-decoration-color: red;
+  text-decoration-color: blue;
+  font-weight: bold;
 }
 
 .sort-up {

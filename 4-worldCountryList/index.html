@@ -14,6 +14,11 @@
     />
   </head>
   <body>
+    <div class="video-background">
+      <video autoplay loop>
+        <source src="backgroundvideo.mp4" type="video/mp4" />
+      </video>
+    </div>
     <header>
       <h1>World Countries List</h1>
       <p>Total Number of countries: <b></b></p>
@@ -60,15 +65,16 @@
             <span class="sort__text">Sort by Population</span>
             <i class="fas fa-sort-alpha-down"></i>
           </button>
-          <button class="top__type " id="population">
-            Top10 by Population
-          </button>
-          <button class="top__type" id="languages">
-            Top10 by Languages
-          </button>
-
-          <div class="showTopBar"></div>
+          <div>
+            <button class="top__type " id="population">
+              Top10 by Population
+            </button>
+            <button class="top__type" id="languages">
+              Top10 by Languages
+            </button>
+          </div>
         </div>
+        <div class="showTopBar"></div>
         <div class="result__country"></div>
       </div>
     </div>

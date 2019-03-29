@@ -90,10 +90,12 @@ function changeTextSearch(country) {
 }
 
 function renderCountries(listCountries) {
+  result.innerHTML = '';
+
   let divResult = '';
   listCountries.map(country => {
     const findCountry = changeTextSearch(country);
-    let html = `<div> 
+    let html = `<div class="wrapper-country"> 
     <p class="flag"><img src=${country.flag}></p>
       <p class="name">${findCountry.name}</p>
       <p class="capital">${findCountry.capital}</p>
@@ -106,7 +108,7 @@ function renderCountries(listCountries) {
 
     divResult += html;
   });
-  return divResult;
+  result.innerHTML = divResult;
 }
 
 /* FUNCTION FOR SHOW TOP10  */
@@ -249,17 +251,14 @@ function topCountries(listCountries) {
 }
 
 function showCountries() {
-  result.innerHTML = '';
-
   const searchType = document.querySelector('.search--click').dataset.search;
   const sortBtnType = document.querySelector('.sort-up').id;
 
   let listCountries = findCountries(searchText.value, searchType);
   listCountries = sortCountries(listCountries, sortBtnType);
   topCountries(listCountries);
-  result.innerHTML = renderCountries(listCountries);
+  renderCountries(listCountries);
 }
-showCountries();
 
 searchText.addEventListener('keyup', showCountries);
 
@@ -321,4 +320,19 @@ findType.forEach(searchItem => {
 
 topType.forEach(btnTopType => {
   btnTopType.addEventListener('click', bntTop);
+});
+// user experience
+const videoPlay = document.querySelector('.video-background');
+searchText.addEventListener('focus', function() {
+  if (searchText.value == '') {
+    videoPlay.style.display = 'none';
+    showCountries();
+  }
+});
+
+searchText.addEventListener('blur', function() {
+  if (searchText.value == '') {
+    result.innerHTML = '';
+    videoPlay.style.display = 'flex';
+  }
 });
