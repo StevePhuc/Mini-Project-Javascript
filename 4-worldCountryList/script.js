@@ -90,6 +90,16 @@ function changeTextSearch(country) {
   return findCountry;
 }
 
+const showLong = () => {
+  const wrapperCountry = document.querySelectorAll('.wrapper-country');
+  console.log(wrapperCountry);
+  wrapperCountry.forEach((country, index) => {
+    window.setTimeout(function() {
+      country.classList.add('is-visible');
+    }, 100 + index * 100);
+  });
+};
+
 function renderCountries(listCountries) {
   result.innerHTML = '';
 
@@ -110,6 +120,8 @@ function renderCountries(listCountries) {
     divResult += html;
   });
   result.innerHTML = divResult;
+
+  // showLong();
 }
 
 /* FUNCTION FOR SHOW TOP10  */
@@ -143,7 +155,7 @@ function sumTopLanguages(listCountries) {
 const showHistogram = () => {
   const btnTopCheck = document.querySelector('.top__check') !== null;
 
-  console.log(btnTopCheck);
+  // console.log(btnTopCheck);
 
   if (btnTopCheck) {
     btnGraph.style.display = 'block';

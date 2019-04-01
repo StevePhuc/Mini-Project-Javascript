@@ -72,6 +72,7 @@ button:hover {
   display: grid;
   grid-template-columns: repeat(3, minmax(100px, 170px)) 1fr;
   grid-gap: 15px;
+  align-items: center;
 }
 
 .buttonType div {
@@ -146,7 +147,7 @@ button:hover {
   margin: 20px auto;
   display: flex;
   flex-flow: wrap;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .result__country div {
@@ -252,4 +253,19 @@ label {
 }
 .histogram .total__name span:nth-child(2) {
   /* transform: rotate(-90deg); */
+}
+
+/* show slow */
+
+.wrapper-country {
+  /* display: none;
+
+  height: 0;
+  overflow: hidden; */
+  /* transition: height 1s ease-in-out; */
+}
+
+.wrapper-country.is-visible {
+  display: block;
+  height: auto;
 }
