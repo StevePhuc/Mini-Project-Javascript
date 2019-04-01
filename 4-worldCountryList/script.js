@@ -8,6 +8,7 @@ const findName = document.querySelector('#findName');
 const findCapital = document.querySelector('#findCapital');
 const findLanguages = document.querySelector('#findLanguages');
 const showTopBar = document.querySelector('.showTopBar');
+const btnGraph = document.querySelector('.buttons-graph');
 
 totalCountries.textContent = countriesObject.length;
 
@@ -139,6 +140,24 @@ function sumTopLanguages(listCountries) {
   return Array.from(mapTop);
 }
 
+const showHistogram = () => {
+  const btnTopCheck = document.querySelector('.top__check') !== null;
+
+  console.log(btnTopCheck);
+
+  if (btnTopCheck) {
+    btnGraph.style.display = 'block';
+    const activeGraph = btnGraph.querySelector('.active').id;
+    if (activeGraph == 'histogram') {
+      showTopBar.classList.add('histogram');
+    } else {
+      showTopBar.classList.remove('histogram');
+    }
+  } else {
+    btnGraph.style.display = 'none';
+  }
+};
+
 const topTotalLanguages = sumTopLanguages(countriesObject);
 
 function percentTotalPopular(numberTop) {
@@ -150,14 +169,14 @@ function percentTotalPopular(numberTop) {
 
 function renderTopCountry(sortTopCountries, topSearchCountry, topType) {
   let html = `
-    <p class="total__name" style="background: linear-gradient(-90deg, darkred 100%, black 0);">
+    <p class="total__name" style="background: linear-gradient(-90deg, darkred 100%, #e9967a4a 0);">
       <span>Total ${topType} all:</span>
       <span>${formatNumber(topTotalCountry)}</span>
     </p> 
     <p class="total__name" 
         style="background: linear-gradient(-90deg, darkred ${percentTotalPopular(
           topSearchCountry
-        )}, black 0);">
+        )}, #e9967a4a 0);">
       <span>Total  ${topType} result:</span> 
       <span>${formatNumber(topSearchCountry)}</span>
     </p>       
@@ -166,7 +185,7 @@ function renderTopCountry(sortTopCountries, topSearchCountry, topType) {
     html += `
     <p class="total__name"  style="background: linear-gradient(-90deg, darkred ${percentTotalPopular(
       parseFloat(topCountry.population)
-    )}, black 0);">
+    )}, #e9967a4a 0);">
       <span>${index + 1}. ${topCountry.name}:</span>
       <span>${formatNumber(topCountry.population)}</span> </p>
     </p>
@@ -181,16 +200,15 @@ function percentLanguages(numberTop) {
 }
 
 function renderTopLanguages(arrTopLanguages) {
-  const showTopBar = document.querySelector('.showTopBar');
   let html = `
-  <p class="total__name" style="background: linear-gradient(-90deg, darkred 100%, black 0);">
+  <p class="total__name" style="background: linear-gradient(-90deg, darkred 100%, #e9967a4a 0);">
     <span>Total languages all:</span>
     <span>${topTotalLanguages.length}</span>
   </p> 
   <p class="total__name" 
       style="background: linear-gradient(-90deg, darkred ${percentLanguages(
         arrTopLanguages.length
-      )}, black 0);">
+      )}, #e9967a4a 0);">
     <span>Total languages result:</span> 
     <span>${arrTopLanguages.length}</span>
   </p>       
@@ -209,7 +227,7 @@ function renderTopLanguages(arrTopLanguages) {
     html += `
     <p class="total__name"  style="background: linear-gradient(-90deg, darkred ${percentLanguages(
       language[1]
-    )}, black 0);">
+    )}, #e9967a4a 0);">
       <span>${index + 1}. ${language[0]}:</span>
       <span>${language[1]}</span> </p>
     </p>
@@ -258,6 +276,7 @@ function showCountries() {
   listCountries = sortCountries(listCountries, sortBtnType);
   topCountries(listCountries);
   renderCountries(listCountries);
+  showHistogram();
 }
 
 searchText.addEventListener('keyup', showCountries);
@@ -297,12 +316,20 @@ function bntTop() {
     this.classList.remove('top__check');
     showTopBar.style.display = 'none';
   } else {
-    showTopBar.style.display = 'block';
+    showTopBar.style.display = 'flex';
     topType.forEach(btnTopType => btnTopType.classList.remove('top__check'));
     this.classList.add('top__check');
-    showCountries();
   }
+  showCountries();
 }
+
+btnGraph.addEventListener('click', function(e) {
+  btnGraph.querySelectorAll('button').forEach(element => {
+    element.classList.remove('active');
+  });
+  e.target.classList.add('active');
+  showHistogram();
+});
 
 // add evemt to every sort and find button
 

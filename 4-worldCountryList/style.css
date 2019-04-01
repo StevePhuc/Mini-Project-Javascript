@@ -2,6 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  transition: 0.3s ease all;
 }
 
 body {
@@ -56,7 +57,8 @@ input[type="text"]:focus {
 
 .search__button button,
 .sort__type,
-.top__type {
+.top__type,
+.buttons-graph button {
   margin-top: 10px;
   background-color: darksalmon;
   padding: 6px;
@@ -85,13 +87,11 @@ input[type="text"]:focus {
 
 .showTopBar {
   color: white;
-  /* display: grid;
-  grid-template-columns: 200px 150px 1fr;
-  grid-gap: 5px;
-  align-items: center; */
+  flex-wrap: wrap;
 }
 
 .total__name {
+  min-width: 100%;
   display: flex;
   justify-content: space-between;
   height: 35px;
@@ -188,9 +188,11 @@ input[type="text"]:focus {
   font-weight: bold;
 }
 
-.sort-up {
+.sort-up,
+.buttons-graph .active {
   background-color: brown;
   border-color: black;
+  color: white;
 }
 
 .sort-up .sort__text {
@@ -211,4 +213,28 @@ label {
 input:not(.result__input),
 label {
   cursor: pointer;
+}
+
+/* button graph */
+.buttons-graph {
+  padding: 10px;
+  margin: auto;
+  text-align: center;
+  display: none;
+}
+
+.histogram {
+  transform: rotate(90deg);
+  width: 60%;
+  height: 520px;
+  margin: auto;
+  display: flex;
+  align-content: center;
+}
+
+.histogram .total__name {
+  flex-direction: row-reverse;
+}
+.histogram .total__name span:nth-child(2) {
+  /* transform: rotate(-90deg); */
 }
