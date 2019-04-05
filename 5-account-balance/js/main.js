@@ -8,6 +8,7 @@ const form = document.querySelector('form');
 const incomeWrapper = document.querySelector('.income-wrapper');
 const expenseWrapper = document.querySelector('.expense-wrapper');
 const result = document.querySelector('.result');
+const reset = document.querySelector('.reset');
 
 const displayDateTime = () => {
     const now = new Date();
