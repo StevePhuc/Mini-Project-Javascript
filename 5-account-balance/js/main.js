@@ -52,7 +52,8 @@ function getData() {
     return [];
 }
 
-function generalData(data) {
+function generalData() {
+    const data = getData();
     if (data) {
         data.forEach(storedData => createList(storedData.id, storedData.title, storedData.num, storedData.time));
     }
@@ -79,8 +80,8 @@ function countBalance() {
 }
 
 // get data first time run
-generalData(getData());
-countBalance(getData());
+generalData();
+countBalance();
 
 // when click
 form.addEventListener('submit', function(event) {
