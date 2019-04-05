@@ -103,4 +103,12 @@ form.addEventListener('submit', function(event) {
     // Reset input UI
     description.value = '';
     amount.value = '';
+    description.focus();
+});
+
+reset.addEventListener('click', function() {
+    localStorage.clear();
+    incomeWrapper.innerHTML = '';
+    expenseWrapper.innerHTML = '';
+    result.innerHTML = `My account balance: 0 €`;
 });
